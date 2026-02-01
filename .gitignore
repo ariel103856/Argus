@@ -1,0 +1,12 @@
+# Node modules (כבדים מאוד, לא מעלים אותם)
+node_modules/
+dist/
+build/
+.env
+
+# Python (קבצים זמניים)
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+env/
