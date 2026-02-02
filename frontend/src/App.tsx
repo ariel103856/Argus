@@ -2,21 +2,22 @@ import { useState, useEffect } from 'react';
 import { Routes, Route, Link as RouterLink, useLocation } from 'react-router-dom';
 import {
   HeroUIProvider, Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Chip,
-  Card, CardBody, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell
+  Card, CardBody, CardHeader, CardFooter, Divider, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell
 } from "@heroui/react";
 import './App.css';
 import argusLogo from './ArgusNeckD.png';
+import TopologyMap from './TopologyMap';
 
 const KPIS = [
-  { title: "vDSC", numCritical: "2", numMajor: "4", numMinor: "0", numWarning: "0", color: "primary" },
+  { title: "vDSC", numCritical: "2", numMajor: "4", numMinor: "0", numWarning: "0", color: "danger" },
   { title: "vMME", numCritical: "0", numMajor: "0", numMinor: "0", numWarning: "23", color: "success" },
-  { title: "vHSS", numCritical: "0", numMajor: "0", numMinor: "0", numWarning: "0", color: "danger" },
+  { title: "vHSS", numCritical: "0", numMajor: "0", numMinor: "0", numWarning: "0", color: "success" },
   { title: "vEPG", numCritical: "0", numMajor: "6", numMinor: "0", numWarning: "0", color: "warning" },
-  { title: "vSAPC", numCritical: "0", numMajor: "0", numMinor: "0", numWarning: "0", color: "warning" },
-  { title: "vCUDB", numCritical: "7", numMajor: "0", numMinor: "25", numWarning: "12", color: "warning" },
-  { title: "vEDA", numCritical: "0", numMajor: "1", numMinor: "0", numWarning: "0", color: "warning" },
-  { title: "vDNS", numCritical: "0", numMajor: "0", numMinor: "0", numWarning: "0", color: "warning" },
-  { title: "BSP", numCritical: "4", numMajor: "0", numMinor: "3", numWarning: "0", color: "warning" },
+  { title: "vSAPC", numCritical: "0", numMajor: "0", numMinor: "0", numWarning: "0", color: "success" },
+  { title: "vCUDB", numCritical: "7", numMajor: "0", numMinor: "25", numWarning: "12", color: "success" },
+  { title: "vEDA", numCritical: "0", numMajor: "1", numMinor: "0", numWarning: "0", color: "success" },
+  { title: "vDNS", numCritical: "0", numMajor: "0", numMinor: "0", numWarning: "0", color: "success" },
+  { title: "BSP", numCritical: "4", numMajor: "0", numMinor: "3", numWarning: "0", color: "success" },
 ];
 
 const ALERTS = [
@@ -25,18 +26,49 @@ const ALERTS = [
   { id: 3, component: "HSS-01", message: "Database Sync Delay", severity: "Minor", time: "10:15:00" },
 ];
 
+function HomePage() {
+  return (
+    <div className="flex flex-col gap-6">
+      <h1 className="text-3xl font-bold text-center text-default-500 text-primary">LTE Core Overview</h1>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {KPIS.map((kpi, index) => (
+          <Card key={index} className="border border-white/5 bg-content2/50 shadow-md text-center">
+            <CardHeader className="justify-center items-center">
+              <h2 className="text-default-500 text-3xl font-bold text-center">{kpi.title}</h2>
+            </CardHeader>
+            <Divider />
+            <CardBody className="justify-center items-center py-4">
+              <div className={`grid grid-cols-4 w-full text-4xl font-bold`}>
+                <div className="text-center flex justify-center text-danger">
+                  {kpi.numCritical}
+                </div>
+                <div className="text-center flex justify-center text-warning">
+                  {kpi.numMajor}
+                </div>
+                <div className="text-center flex justify-center">
+                  {kpi.numMinor}
+                </div>
+                <div className="text-center flex justify-center text-primary">
+                  {kpi.numWarning}
+                </div>
+              </div>
+            </CardBody>
+            <Divider />
+            <CardFooter className={`text-default-500 text-2xl font-bold text-center bg-${kpi.color}`}>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function Dashboard100() {
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        {KPIS.map((kpi, index) => (
-          <Card key={index} className="border border-white/5 bg-content2/50 shadow-md">
-            <CardBody className="gap-2">
-              <h2 className="text-default-500 text-3xl font-bold">{kpi.title}</h2>
-              <h4 className={`grid grid-cols-4 text-2xl font-bold text-center text-${kpi.color}`}>{kpi.numCritical}  {kpi.numMajor}  {kpi.numMinor}  {kpi.numWarning}</h4>
-            </CardBody>
-          </Card>
-        ))}
+      <div className="flex flex-col gap-4">
+        <h3 className="text-2xl font-bold text-primary text-center">Core 100 LTE Topology</h3>
+        <TopologyMap />
       </div>
     </div>
   );
@@ -45,15 +77,9 @@ function Dashboard100() {
 function Dashboard350() {
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        {KPIS.map((kpi, index) => (
-          <Card key={index} className="border border-white/5 bg-content2/50 shadow-md">
-            <CardBody className="gap-2">
-              <h2 className="text-default-500 text-3xl font-bold">{kpi.title}</h2>
-              <h4 className={`grid grid-cols-4 text-2xl font-bold text-center text-${kpi.color}`}>{kpi.numCritical}  {kpi.numMajor}  {kpi.numMinor}  {kpi.numWarning}</h4>
-            </CardBody>
-          </Card>
-        ))}
+      <div className="flex flex-col gap-4">
+        <h3 className="text-2xl font-bold text-primary text-center">Core 350 LTE Topology</h3>
+        <TopologyMap />
       </div>
     </div>
   );
@@ -95,7 +121,7 @@ function App() {
   const location = useLocation();
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000')
+    fetch('http://127.0.0.1:8000/')
       .then(() => setBackendStatus("Online 🟢"))
       .catch(() => setBackendStatus("Offline 🔴"));
   }, []);
@@ -113,6 +139,12 @@ function App() {
           </NavbarBrand>
 
           <NavbarContent className="hidden sm:flex gap-8" justify="center">
+            <NavbarItem isActive={location.pathname === "/"}>
+              <Link as={RouterLink} to="/" color={location.pathname === "/" ? "primary" : "foreground"}>
+                Home
+              </Link>
+            </NavbarItem>
+
             <NavbarItem isActive={location.pathname === "/core100"}>
               <Link as={RouterLink} to="/core100" color={location.pathname === "/core100" ? "primary" : "foreground"}>
                 CORE 100
@@ -141,6 +173,7 @@ function App() {
 
         <div className="p-6 w-full max-w-[1600px] mx-auto">
           <Routes>
+            <Route path="/" element={<HomePage />} />
             <Route path="/core100" element={<Dashboard100 />} />
             <Route path="/core350" element={<Dashboard350 />} />
             <Route path="/logs" element={<LogsPage />} />

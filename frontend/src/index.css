@@ -64,3 +64,48 @@ body,
   width: 100% !important;
   text-align: left;
 }
+
+
+.react-flow__controls {
+  background-color: #18181B;
+  border: 1px solid #3F3F46;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  padding: 2px;
+}
+
+.react-flow__controls-button {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #27272A;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.react-flow__controls-button:last-child {
+  border-bottom: none;
+}
+
+.react-flow__controls-button svg {
+  fill: #A1A1AA;
+  max-width: 14px;
+  max-height: 14px;
+}
+
+/* מצב הובר (כשעוברים עם העכבר) */
+.react-flow__controls-button:hover {
+  background-color: #27272A;
+}
+
+.react-flow__controls-button:hover svg {
+  fill: #006FEE;
+}
+
+.react-flow__attribution {
+  display: none !important;
+}
